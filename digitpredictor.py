@@ -1,4 +1,8 @@
+import math
 import numpy as np
+import seaborn as sns
+from random import seed
+from random import random
 from tensorflow import keras
 from tensorflow.keras import layers
 
@@ -27,26 +31,35 @@ y_train = keras.utils.to_categorical(y_train, num_classes)
 y_test = keras.utils.to_categorical(y_test, num_classes)
 
 # build convolutional neural network
-model = keras.Sequential(
-    [
-        keras.Input(shape=input_shape, name="image_input"),
-        layers.Conv2D(32, kernel_size=(3, 3), activation="relu"),
-        layers.MaxPooling2D(pool_size=(2, 2)),
-        layers.Conv2D(64, kernel_size=(3, 3), activation="relu"),
-        layers.MaxPooling2D(pool_size=(2, 2)),
-        layers.Flatten(),
-        layers.Dropout(0.5),
-        layers.Dense(num_classes, activation="softmax")
-    ]
-)
+# model = keras.Sequential(
+    # [
+        # keras.Input(shape=input_shape, name="image_input"),
+        # layers.Conv2D(32, kernel_size=(3, 3), activation="relu"),
+        # layers.MaxPooling2D(pool_size=(2, 2)),
+        # layers.Conv2D(64, kernel_size=(3, 3), activation="relu"),
+        # layers.MaxPooling2D(pool_size=(2, 2)),
+        # layers.Flatten(),
+        # layers.Dropout(0.5),
+        # layers.Dense(num_classes, activation="softmax")
+    # ]
+# )
 
 print("===============================")
-model.summary()
+#model.summary()
 
-model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+#model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
-model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=0.1)
+#model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=0.1)
 
-score = model.evaluate(x_test, y_test, verbose=1)
+#score = model.evaluate(x_test, y_test, verbose=1)
 
-print("Test loss: %s\nTest accuracy: %s" % (score[0], score[1]))
+#print("Test loss: %s\nTest accuracy: %s" % (score[0], score[1]))
+
+seed(1)
+
+for i in range(10):
+    print("===========================")
+    sample = math.floor(random() * len(x_test))
+    sns.heatmap(x_test[0])
+    print("Number: " + y_test[0]) 
+
