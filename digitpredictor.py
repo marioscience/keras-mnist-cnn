@@ -4,13 +4,14 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from random import seed
 from random import random
+import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 
 num_classes = 10
 input_shape = (28, 28, 1)
 batch_size = 128
-epochs = 35
+epochs = 50
 
 (x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
 
@@ -57,14 +58,17 @@ print("Test loss: %s\nTest accuracy: %s" % (score[0], score[1]))
 seed(1)
 
 plt_figure = plt.figure(2)
+visual_samples = 16
 
-for i in range(9):
+for i in range(visual_samples):
     sample = math.floor(random() * len(x_test))
     image = np.array(x_test[sample])
-    image = image.reshape((28, 28))
-    figure = plt_figure.add_subplot(3,3,i+1)
+    prediction = model.predict(np.expand_dims(image, axis=0))
+    image = image.reshape(28, 28)
+    figure = plt_figure.add_subplot(math.sqrt(visual_samples),math.sqrt(visual_samples),i+1)
     figure = plt.imshow(image, cmap="gray")
-    print(np.where(y_test[sample] == 1)[0][0])
+    print("\t<actual>:\t <predicted>")
+    print("\t" + str(np.where(y_test[sample] == 1)[0][0].item()) + ":\t " + str(np.argmax(prediction, axis=1)))
 
 plt.tight_layout(pad=0.4, w_pad=0.5, h_pad=1.0)
 
